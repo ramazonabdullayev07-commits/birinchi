@@ -3,221 +3,47 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sevgi Sahifasi</title>
+  <title>Ramazon</title>
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
     body {
       min-height: 100vh;
-      font-family: "Segoe UI", cursive, sans-serif;
-      overflow: hidden;
-      position: relative;
+      font-family: "Segoe UI", sans-serif;
+      background: linear-gradient(135deg, #3a6186, #89253e);
       color: white;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: flex-start;
+      justify-content: center;
       text-align: center;
-      padding: 60px 20px 20px 20px;
     }
-
-    /* Fon rasm — jim turadi */
-    .background-layer {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: url('bg.jpg') center/cover no-repeat;
-      z-index: -3;
+    h1 {
+      font-size: 3em;
+      margin-bottom: 10px;
     }
-
-    /* Qor parchasi effekti — yorqin va kattaroq */
-    .snowflake {
-      position: fixed;
-      top: -10px;
-      color: rgba(255,255,255,0.95);
-      font-size: 2.8em;
-      opacity: 0.95;
-      animation: fall 6s linear forwards;
-      z-index: -1;
-      user-select: none;
-    }
-
-    @keyframes fall {
-      0% { transform: translateY(0) translateX(0); opacity: 1; }
-      100% { transform: translateY(100vh) translateX(30px); opacity: 0; }
-    }
-
-    /* Matn */
-    .text-box {
-      max-width: 90%;
-      font-size: 1.8em;
-      font-weight: 900;
-      line-height: 1.7;
-      text-shadow: 2px 2px 12px rgba(0,0,0,0.8);
-      z-index: 20;
-      position: relative;
-      white-space: pre-line;
-    }
-
-    /* Yuraklar */
-    .heart {
-      position: absolute;
-      font-size: 2.8em;
-      pointer-events: auto;
-      z-index: 15;
-      animation: flyUp 4s forwards ease-out;
-      user-select: none;
-      cursor: pointer;
-    }
-
-    @keyframes flyUp {
-      0% { transform: translateY(0) scale(0.7); opacity: 0; }
-      50% { transform: translateY(-70px) scale(1.4); opacity: 1; }
-      100% { transform: translateY(-160px) scale(0.7); opacity: 0; }
-    }
-
-    /* So‘z chiqishi */
-    .floating-word {
-      position: absolute;
-      color: #fff;
-      font-size: 1.6em;
-      font-weight: bold;
-      text-shadow: 0 0 10px rgba(255,255,255,0.8);
-      opacity: 0;
-      animation: wordFade 2.5s forwards ease-out;
-      user-select: none;
-      pointer-events: none;
-    }
-
-    @keyframes wordFade {
-      0% { opacity: 0; transform: translateY(0); }
-      30% { opacity: 1; transform: translateY(-20px); }
-      100% { opacity: 0; transform: translateY(-80px); }
-    }
-
-    #play-btn {
-      margin-top: 25px;
-      padding: 14px 35px;
+    p {
       font-size: 1.2em;
-      border-radius: 30px;
-      border: none;
-      background: linear-gradient(45deg, #ff1493, #ff69b4);
-      color: white;
-      cursor: pointer;
-      box-shadow: 0 6px 20px rgba(255,20,147,0.5);
-      transition: 0.3s;
-      z-index: 20;
-      font-weight: bold;
+      opacity: 0.9;
     }
-
-    #play-btn:hover {
-      transform: scale(1.1);
+    footer {
+      position: absolute;
+      bottom: 15px;
+      font-size: 0.9em;
+      opacity: 0.8;
     }
   </style>
 </head>
 <body>
-
-  <!-- Fon -->
-  <div class="background-layer"></div>
-
-  <!-- Matn -->
-  <div class="text-box">
-    Barchasi oddiy ko‘rinadi,<br>lekin u bor joyda hammasi boshqacha.
-  </div>
-
-  <!-- Yuraklar -->
-  <div id="hearts-container"></div>
-
-  <!-- Ovoz tugmasi -->
-  <button id="play-btn">🎵 Ovoz yoqish</button>
-
-  <!-- Musiqa -->
-  <audio id="bg-audio" loop>
-    <source src="musiqa.mp3" type="audio/mpeg">
-  </audio>
-
+  <h1>Ramazon</h1>
+  <p>Bu mening shaxsiy sahifam 💫</p>
+  <footer>&copy; <span id="year"></span> Ramazon</footer>
   <script>
-    const container = document.getElementById('hearts-container');
-    const colors = ['#ff69b4', '#ff1493', '#ffb6c1', '#ff4500', '#00ffff', '#7fff00', '#ffa500'];
-    const audio = document.getElementById('bg-audio');
-    const btn = document.getElementById('play-btn');
-    const words = ["Mehr", "Do‘stlik", "Ishonch", "Baxt", "Sadoqat", "Sevgi", "Orzu", "Yaxshilik"];
-
-    btn.addEventListener('click', () => {
-      audio.play().catch(()=>{}); // autoplay browser blok qilsa xato chiqmaydi
-      btn.style.display = 'none';
-    });
-
-    // Yurak yaratish + portlash
-    function createHeart() {
-      const heart = document.createElement('div');
-      heart.classList.add('heart');
-      heart.innerHTML = '🤍';
-      heart.style.left = Math.random() * 80 + 10 + 'vw';
-      heart.style.bottom = '-10px';
-      heart.style.color = colors[Math.floor(Math.random() * colors.length)];
-      heart.style.animationDuration = (3 + Math.random() * 2) + 's';
-
-      heart.addEventListener('click', (e) => {
-        // So‘z chiqishi
-        const word = document.createElement('div');
-        word.classList.add('floating-word');
-        word.textContent = words[Math.floor(Math.random() * words.length)];
-        word.style.left = e.clientX + 'px';
-        word.style.top = e.clientY + 'px';
-        document.body.appendChild(word);
-        setTimeout(() => word.remove(), 2500);
-
-        // Portlash particle
-        for (let i = 0; i < 12; i++) {
-          const particle = document.createElement('div');
-          particle.classList.add('heart');
-          particle.innerHTML = '🤍';
-          particle.style.left = e.clientX + 'px';
-          particle.style.top = e.clientY + 'px';
-          particle.style.fontSize = (8 + Math.random() * 15) + 'px';
-          particle.style.opacity = 0.4 + Math.random() * 0.6;
-          particle.style.color = colors[Math.floor(Math.random() * colors.length)];
-          particle.style.transition = `transform 0.8s ease-out, opacity 0.8s ease-out`;
-
-          const angle = Math.random() * 2 * Math.PI;
-          const distance = 60 + Math.random() * 60;
-          const xMove = Math.cos(angle) * distance;
-          const yMove = Math.sin(angle) * distance;
-
-          document.body.appendChild(particle);
-          setTimeout(() => {
-            particle.style.transform = `translate(${xMove}px, ${yMove}px) scale(0.5)`;
-            particle.style.opacity = 0;
-          }, 10);
-
-          setTimeout(() => particle.remove(), 900);
-        }
-      });
-
-      container.appendChild(heart);
-      setTimeout(() => heart.remove(), 5000);
-    }
-
-    setInterval(createHeart, 1000);
-    for (let i = 0; i < 8; i++) setTimeout(createHeart, i * 300);
-
-    // Qor parchasi effekti
-    function createSnowflake() {
-      const snow = document.createElement('div');
-      snow.classList.add('snowflake');
-      snow.innerHTML = '❄️';
-      snow.style.left = Math.random() * 100 + 'vw';
-      snow.style.fontSize = (28 + Math.random() * 10) + 'px';
-      snow.style.animationDuration = (4 + Math.random() * 3) + 's';
-      document.body.appendChild(snow);
-      setTimeout(() => snow.remove(), 7000);
-    }
-
-    setInterval(createSnowflake, 300);
+    document.getElementById("year").textContent = new Date().getFullYear();
   </script>
-
 </body>
 </html>
+
